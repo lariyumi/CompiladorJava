@@ -1,0 +1,17 @@
+programa meuPrograma
+
+	declare a, b: number;
+	declare x, y: text;
+	inicio
+		escreva("Hello World");
+		escreva("Fim do programa");
+		leia(a);
+		leia(b);
+		escreva(a);
+		se ( a + 2 > 5 - b ) entao
+			escreva("Maior que 5");
+		senao
+			escreva ("Menor ou igual a 5");
+		fimse
+	fim
+fimprog
