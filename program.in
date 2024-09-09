@@ -39,6 +39,19 @@ programa meuPrograma
 		enquanto (b < 10)
 			escreva(b);
 			b += 1;
+			enquanto(a < 5)
+				escreva(a);
+				a += 1;
+			fimwhile
+			faca
+				escreva(a);
+				a += 5;
+			enquanto (a < 5)
 		fimwhile
+		
+		faca
+			escreva(b);
+			b-=1;
+		enquanto (b > 10)
 	fim
 fimprog

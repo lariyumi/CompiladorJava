@@ -22,6 +22,8 @@ grammar Grammar;
 	private Stack<IfCommand> ifCommandStack = new Stack<IfCommand>();
 	//Stack para o comando while
 	private Stack<WhileCommand> whileCommandStack = new Stack<WhileCommand>();
+	//Stack para o comando do while
+	private Stack<DoWhileCommand> doWhileCommandStack = new Stack<DoWhileCommand>();
 	//Foi criada uma pilha de listas de comando
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 	
@@ -79,6 +81,7 @@ comando		:	cmdAtrib
 			|	cmdEscrita
 			|	cmdIf
 			|	cmdWhile
+			|	cmdDoWhile
 			;
 			
 cmdIf		:	'se'	{ 
@@ -135,12 +138,38 @@ cmdWhile	:	'enquanto'	{
 							}
 			;
 			
+cmdDoWhile	:	'faca'	{
+							stack.push(new ArrayList<Command>());
+							doWhileCommandStack.push(new DoWhileCommand());
+							expressionStack.push(new ExpressionCommand());
+							strExpr = "";
+						}
+				comando+	{ 
+								doWhileCommandStack.peek().setList(stack.pop());  
+							}
+				'enquanto'
+				AP		{ strExpr = ""; }
+				expr
+				OP_REL	{ 
+							strExpr += _input.LT(-1).getText(); 
+						}
+				expr	{
+							expressionStack.peek().setExpression(strExpr); 
+							strExpr = "";
+						}
+				FP 	{ 	
+						doWhileCommandStack.peek().setExpression(expressionStack.pop().getExpression());
+						stack.peek().add(doWhileCommandStack.pop());
+					}
+			;
+		
 cmdAtrib	:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 						throw new SemanticException("Variável não declarada: " + _input.LT(-1).getText());
 					} 
 					symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
 					leftType = symbolTable.get(_input.LT(-1).getText()).getType();
 				}
+				(OP)?
 				OP_AT 
 				expr
 				PV
