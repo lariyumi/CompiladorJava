@@ -16,8 +16,9 @@ grammar Grammar;
 	private Types currentType;
 	private Types leftType = null, rightType = null;
 	private Program program = new Program();
-	private String strExpr = "";
-	private IfCommand currentIfCommand;
+	private String strExpr;
+	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
+	private Stack<IfCommand> ifCommandStack = new Stack<IfCommand>();
 	//Foi criada uma pilha de listas de comando
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 	
@@ -78,27 +79,31 @@ comando		:	cmdAtrib
 			
 cmdIf		:	'se'	{ 
 							stack.push(new ArrayList<Command>()); 
+							ifCommandStack.push(new IfCommand());
+							expressionStack.push(new ExpressionCommand());
 							strExpr = "";
-							currentIfCommand = new IfCommand();
 						}
 				AP 
 				expr 
-				OP_REL { strExpr += _input.LT(-1).getText(); } 
+				OP_REL { strExpr += _input.LT(-1).getText();  } 
 				expr 
-				FP { currentIfCommand.setExpression(strExpr); }
+				FP 	{ 	
+						expressionStack.peek().setExpression(strExpr); 
+						ifCommandStack.peek().setExpression(expressionStack.pop().getExpression());
+					}
 				'entao' 
 				comando+	{ 
-								currentIfCommand.setTrueList(stack.pop()); 
+								ifCommandStack.peek().setTrueList(stack.pop());  
 							}
 				('senao'	{
 								stack.push(new ArrayList<Command>());
 							}
 				comando+	{
-								currentIfCommand.setFalseList(stack.pop());
+								ifCommandStack.peek().setFalseList(stack.pop());
 							}
 				)?
 				'fimse'	{
-							stack.peek().add(currentIfCommand);
+							stack.peek().add(ifCommandStack.pop());
 						}
 			;
 			
@@ -215,7 +220,7 @@ OP_REL		:	'>' | '<' | '>=' | '<=' | '==' | '!='
 ID			:	[a-z] ( [a-z] | [A-Z] | [0-9] )*
 			;
 			
-TEXTO		:	'"' ( [\u0020-\u0021\u0023-\u007E] )* '"'
+TEXTO		:	'"' ( [a-z] | [A-Z] | [0-9] | ' ' | ',' | '.' | '-' | '!' | '(' | ')' )* '"'
 			;
 			
 NUM			:	[0-9]+ ( '.' [0-9]+ )?

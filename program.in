@@ -7,11 +7,26 @@ programa meuPrograma
 		escreva("Fim do programa");
 		leia(a);
 		leia(b);
+		leia(x);
+		leia(y);
+		a = 2 + 3.14 - 5 * 8.56 / a - a * a;
 		escreva(a);
-		se ( a + 2 > 5 - b ) entao
-			escreva("Maior que 5");
+		se ( a  > 5 ) entao
+			se (b > a) entao
+				escreva("Maior que 5");
+			senao
+				escreva("A maior que b");
+			fimse
 		senao
 			escreva ("Menor ou igual a 5");
+			se (b > a) entao
+				escreva("B maior que A");
+			senao
+				escreva("A maior que B");
+				se (x == y) entao
+					escreva("X igual a Y");
+				fimse
+			fimse
 		fimse
 	fim
 fimprog

@@ -1,13 +1,14 @@
 package io.compiler.core.ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IfCommand extends Command {
 
 	private String expression;
 	private List<Command> trueList;
-	private List<Command> falseList;
-	
+	private List<Command> falseList = new ArrayList<Command>();
+
 	public String getExpression() {
 		return expression;
 	}
