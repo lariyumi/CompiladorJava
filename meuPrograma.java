@@ -13,9 +13,13 @@ public class meuPrograma{
 		x = sc.nextLine();
 		y = sc.nextLine();
 		System.out.println(a);
+		while (a<5) {
+			System.out.println(a);
+		}
 		if (a>5) {
-			if (b>a) {
 			System.out.println("Maior que 5");
+			if (b>a) {
+			System.out.println("B maior que A");
 		}
 		else {
 			System.out.println("A maior que b");
@@ -32,6 +36,9 @@ public class meuPrograma{
 			System.out.println("X igual a Y");
 		}
 		}
+		}
+		while (b<10) {
+			System.out.println(b);
 		}
 	}
 }

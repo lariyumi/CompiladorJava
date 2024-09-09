@@ -18,7 +18,10 @@ grammar Grammar;
 	private Program program = new Program();
 	private String strExpr;
 	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
+	//Stack para o comando if
 	private Stack<IfCommand> ifCommandStack = new Stack<IfCommand>();
+	//Stack para o comando while
+	private Stack<WhileCommand> whileCommandStack = new Stack<WhileCommand>();
 	//Foi criada uma pilha de listas de comando
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 	
@@ -75,6 +78,7 @@ comando		:	cmdAtrib
 			|	cmdLeitura
 			|	cmdEscrita
 			|	cmdIf
+			|	cmdWhile
 			;
 			
 cmdIf		:	'se'	{ 
@@ -89,6 +93,7 @@ cmdIf		:	'se'	{
 				expr 
 				FP 	{ 	
 						expressionStack.peek().setExpression(strExpr); 
+						strExpr = "";
 						ifCommandStack.peek().setExpression(expressionStack.pop().getExpression());
 					}
 				'entao' 
@@ -105,6 +110,29 @@ cmdIf		:	'se'	{
 				'fimse'	{
 							stack.peek().add(ifCommandStack.pop());
 						}
+			;
+			
+cmdWhile	:	'enquanto'	{
+								stack.push(new ArrayList<Command>());
+								whileCommandStack.push(new WhileCommand());
+								expressionStack.push(new ExpressionCommand());
+								strExpr = "";
+							}
+				AP 
+				expr 
+				OP_REL { strExpr += _input.LT(-1).getText(); }
+				expr 
+				FP	{ 	
+						expressionStack.peek().setExpression(strExpr); 
+						strExpr = "";
+						whileCommandStack.peek().setExpression(expressionStack.pop().getExpression());
+					}
+				comando+	{ 
+								whileCommandStack.peek().setList(stack.pop());  
+							}
+				'fimwhile'	{
+								stack.peek().add(whileCommandStack.pop());
+							}
 			;
 			
 cmdAtrib	:	ID { if (!isDeclared(_input.LT(-1).getText())) {

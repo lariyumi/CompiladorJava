@@ -10,10 +10,17 @@ programa meuPrograma
 		leia(x);
 		leia(y);
 		a = 2 + 3.14 - 5 * 8.56 / a - a * a;
+		a = 10;
 		escreva(a);
+		
+		enquanto (a < 5)
+			escreva(a);
+			a += 1;
+		fimwhile
 		se ( a  > 5 ) entao
+			escreva("Maior que 5");
 			se (b > a) entao
-				escreva("Maior que 5");
+				escreva("B maior que A");
 			senao
 				escreva("A maior que b");
 			fimse
@@ -28,5 +35,10 @@ programa meuPrograma
 				fimse
 			fimse
 		fimse
+		
+		enquanto (b < 10)
+			escreva(b);
+			b += 1;
+		fimwhile
 	fim
 fimprog
