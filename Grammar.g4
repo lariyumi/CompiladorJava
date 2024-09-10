@@ -7,6 +7,7 @@ grammar Grammar;
 	import io.compiler.core.exceptions.*;
 	import io.compiler.core.ast.*;
 	import java.util.Stack;
+	import java.util.List;
 }
 
 
@@ -18,14 +19,23 @@ grammar Grammar;
 	private Program program = new Program();
 	private String strExpr;
 	private Stack<ExpressionCommand> expressionStack = new Stack<ExpressionCommand>();
+	private Var atribVar;
+	private String atribuicao;
+	private String op;
+	private CommandAtrib comandoAtribuicao;
+	
 	//Stack para o comando if
 	private Stack<IfCommand> ifCommandStack = new Stack<IfCommand>();
+	
 	//Stack para o comando while
 	private Stack<WhileCommand> whileCommandStack = new Stack<WhileCommand>();
+	
 	//Stack para o comando do while
 	private Stack<DoWhileCommand> doWhileCommandStack = new Stack<DoWhileCommand>();
+	
 	//Foi criada uma pilha de listas de comando
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
+
 	
 	public void updateType() { 
 		for(Var v: currentDecl){
@@ -168,17 +178,32 @@ cmdAtrib	:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 					} 
 					symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
 					leftType = symbolTable.get(_input.LT(-1).getText()).getType();
+					op = "";
+					atribuicao = "";
+					atribVar = new Var();
+					comandoAtribuicao = new CommandAtrib();
+					atribVar.setId(symbolTable.get(_input.LT(-1).getText()).getId());
+					atribVar.setType(symbolTable.get(_input.LT(-1).getText()).getType());
+					comandoAtribuicao.setVar(atribVar);
 				}
-				(OP)?
-				OP_AT 
+				(OP)? 
+					{
+						if (_input.LT(-1).getText().equals("+") || _input.LT(-1).getText().equals("-") || _input.LT(-1).getText().equals("*") || _input.LT(-1).getText().equals("/")) {
+							op += _input.LT(-1).getText();
+						}
+				 	}
+				OP_AT { op += _input.LT(-1).getText(); }
 				expr
 				PV
 				{ 
-					System.out.println("Tipo da expressão do lado esquerdo = " + leftType); 
-					System.out.println("Tipo da expressão do lado direito = " + rightType); 
-					if ( leftType.getValue() < rightType.getValue() ) {
+					//System.out.println("Tipo da expressão do lado esquerdo = " + leftType); 
+					//System.out.println("Tipo da expressão do lado direito = " + rightType); 
+					if ( leftType.getValue() != rightType.getValue() ) {
 						throw new SemanticException("Houve uma incompatibilidade de tipos na atribuição");
 					}
+					comandoAtribuicao.setOperador(op);
+					comandoAtribuicao.setAtrib(atribuicao);;
+					stack.peek().add(comandoAtribuicao);
 				}
 			;
 			
@@ -210,7 +235,11 @@ cmdEscrita	:	'escreva' AP
 				}
 			;
 			
-expr		:	termo { strExpr += _input.LT(-1).getText(); } exprl
+expr		:	termo 	{ 
+							strExpr += _input.LT(-1).getText();
+							atribuicao += _input.LT(-1).getText();
+			 			}
+			 	exprl
 			;
 			
 termo		:	ID { if (!isDeclared(_input.LT(-1).getText())) {
@@ -224,7 +253,7 @@ termo		:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 						//System.out.println("Encontrei pela 1a vez uma variável = " + rightType);
 					}
 					else {
-						if (symbolTable.get(_input.LT(-1).getText()).getType().getValue() > rightType.getValue()) {
+						if (symbolTable.get(_input.LT(-1).getText()).getType().getValue() != rightType.getValue()) {
 							rightType = symbolTable.get(_input.LT(-1).getText()).getType();
 							//System.out.println("Já havia tipo declarado e mudou para = " + rightType);
 						}
@@ -235,7 +264,7 @@ termo		:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 							//System.out.println("Encontrei um número pela primeira vez = " + rightType);
 						}
 						else {
-							if ( rightType.getValue() < Types.NUMBER.getValue() ) {
+							if ( rightType.getValue() != Types.NUMBER.getValue() ) {
 								rightType = Types.NUMBER;
 								//System.out.println("Mudei o tipo para NUMBER = " + rightType);
 							}
@@ -246,7 +275,7 @@ termo		:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 							//System.out.println("Encontrei um texto pela primeira vez = " + rightType);
 						}
 						else {
-							if ( rightType.getValue() < Types.TEXT.getValue() ) {
+							if ( rightType.getValue() != Types.TEXT.getValue() ) {
 								rightType = Types.TEXT;
 								//System.out.println("Mudei o tipo para TEXT = " + rightType);
 							}
@@ -257,15 +286,20 @@ termo		:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 exprl		:	( OP 
 					{ 
 						strExpr += _input.LT(-1).getText(); 
+						atribuicao += _input.LT(-1).getText();
 					} 
 				termo 
 					{ 
 						strExpr += _input.LT(-1).getText(); 
+						atribuicao += _input.LT(-1).getText();
 					}
 				)*
 			;
 			
-OP			:	'+' | '-' | '*' | '/'
+OP			:	'+'
+				| '-'
+				| '*'
+				| '/'
 			;
 			
 OP_AT		:	'='
