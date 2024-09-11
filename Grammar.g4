@@ -8,6 +8,7 @@ grammar Grammar;
 	import io.compiler.core.ast.*;
 	import java.util.Stack;
 	import java.util.List;
+	import java.util.Map.Entry;
 }
 
 
@@ -180,6 +181,16 @@ programa	:	'programa' ID 	{
 				'fimprog'
 				
 				{
+					try { 
+					    for (Entry<String, Var> entry: symbolTable.entrySet()) {
+					    	boolean isUsed = entry.getValue().isInitialized();
+					    	if (isUsed == false) {
+					    		throw new SemanticException("Variável não declarada, mas não utilizada: " + entry.getValue().getId());
+					    	}
+					    }
+					} catch (RuntimeException e) { 
+					    System.out.println("Aviso: " + e); 
+					} 
 					program.setSymbolTable(symbolTable);
 					program.setCommandList(stack.pop());
 				}

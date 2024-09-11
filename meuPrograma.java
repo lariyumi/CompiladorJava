@@ -11,7 +11,6 @@ public class meuPrograma{
 		a = sc.nextFloat();
 		b = sc.nextFloat();
 		x = sc.nextLine();
-		y = sc.nextLine();
 		a = (float) 46.01;
 		a = (float) 10.10;
 		System.out.println(a);
@@ -35,7 +34,7 @@ public class meuPrograma{
 		}
 		else {
 			System.out.println("A maior que B");
-			if (x==y) {
+			if (x==x) {
 			System.out.println("X igual a Y");
 		}
 		}

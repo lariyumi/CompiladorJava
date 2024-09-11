@@ -8,7 +8,6 @@ programa meuPrograma
 		leia(a);
 		leia(b);
 		leia(x);
-		leia(y);
 		a = 2 + 3.14 - 5 * 8.56 / 10 + 7 * 6.45;
 		a = 10.10;
 		escreva(a);
@@ -30,7 +29,7 @@ programa meuPrograma
 				escreva("B maior que A");
 			senao
 				escreva("A maior que B");
-				se (x == y) entao
+				se (x == x) entao
 					escreva("X igual a Y");
 				fimse
 			fimse
