@@ -65,17 +65,103 @@ grammar Grammar;
 				countOperations++;
 			}
 		}
+		
 		String[] parts = {};
 		float value = 0;
+		
 		for(int i = 0; i < countOperations; i++) {
-			if ((expr.indexOf('/') < expr.indexOf('*')) && (expr.indexOf('/') != -1)) {
+			if ((expr.indexOf('/') < expr.indexOf('*')) && (expr.indexOf('/') != -1) || ((expr.indexOf('*') == -1 && expr.indexOf('/') != -1))) {
 				parts = expr.split("\\/");
-			} else if ((expr.indexOf('/') > expr.indexOf('*')) && (expr.indexOf('*') != -1)) {
+				String number1 = "";
+				String number2 = "";
+				for (int j = 1; j <= parts[0].length(); j++ ) {
+					if((parts[0].charAt(parts[0].length() - j) == '+') || (parts[0].charAt(parts[0].length() - j) == '-') || (parts[0].charAt(parts[0].length() - j) == '/') || (parts[0].charAt(parts[0].length() - j) == '*')) {
+						break;
+					}
+					number1 += parts[0].charAt(parts[0].length() - j);
+				}
+				number1 = new StringBuilder(number1).reverse().toString();
+				for (int j = 0; j < parts[1].length(); j++ ) {
+					if((parts[1].charAt(j) == '+') || (parts[1].charAt(j) == '-') || (parts[1].charAt(j) == '/') || (parts[1].charAt(j) == '*')) {
+						break;
+					}
+					number2 += parts[1].charAt(j);
+				}
+				value = Float.valueOf(number1) / Float.valueOf(number2);
+				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
+				expr = expr.replaceFirst(number1, "" + value);
+				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst("\\/", "");
+			} else if (((expr.indexOf('/') > expr.indexOf('*')) && (expr.indexOf('*') != -1)) || ((expr.indexOf('/') == -1 && expr.indexOf('*') != -1))) {
 				parts = expr.split("\\*");
-			} else if ((expr.indexOf('+') < expr.indexOf('-')) && (expr.indexOf('+') != -1)) {
+				String number1 = "";
+				String number2 = "";
+				for (int j = 1; j <= parts[0].length(); j++ ) {
+					if((parts[0].charAt(parts[0].length() - j) == '+') || (parts[0].charAt(parts[0].length() - j) == '-') || (parts[0].charAt(parts[0].length() - j) == '/') || (parts[0].charAt(parts[0].length() - j) == '*')) {
+						break;
+					}
+					number1 += parts[0].charAt(parts[0].length() - j);
+				}
+				number1 = new StringBuilder(number1).reverse().toString();
+				for (int j = 0; j < parts[1].length(); j++ ) {
+					if((parts[1].charAt(j) == '+') || (parts[1].charAt(j) == '-') || (parts[1].charAt(j) == '/') || (parts[1].charAt(j) == '*')) {
+						break;
+					}
+					number2 += parts[1].charAt(j);
+				}
+				value = Float.valueOf(number1) * Float.valueOf(number2);
+				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
+				expr = expr.replaceFirst(number1, "" + value);
+				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst("\\*", "");
+			} else if ((expr.indexOf('+') < expr.indexOf('-')) && (expr.indexOf('+') != -1)  || ((expr.indexOf('-') == -1 && expr.indexOf('+') != -1))) {
 				parts = expr.split("\\+");
-			} else if ((expr.indexOf('/') > expr.indexOf('-')) && (expr.indexOf('-') != -1)) {
+				String number1 = "";
+				String number2 = "";
+				for (int j = 1; j <= parts[0].length(); j++ ) {
+					if((parts[0].charAt(parts[0].length() - j) == '+') || (parts[0].charAt(parts[0].length() - j) == '-') || (parts[0].charAt(parts[0].length() - j) == '/') || (parts[0].charAt(parts[0].length() - j) == '*')) {
+						break;
+					}
+					number1 += parts[0].charAt(parts[0].length() - j);
+				}
+				number1 = new StringBuilder(number1).reverse().toString();
+				for (int j = 0; j < parts[1].length(); j++ ) {
+					if((parts[1].charAt(j) == '+') || (parts[1].charAt(j) == '-') || (parts[1].charAt(j) == '/') || (parts[1].charAt(j) == '*')) {
+						break;
+					}
+					number2 += parts[1].charAt(j);
+				}
+				value = Float.valueOf(number1) + Float.valueOf(number2);
+				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
+				expr = expr.replaceFirst(number1, "" + value);
+				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst("\\+", "");
+			} else if ((expr.indexOf('+') > expr.indexOf('-')) && (expr.indexOf('-') != -1) || ((expr.indexOf('+') == -1 && expr.indexOf('-') != -1))) {
 				parts = expr.split("\\-");
+				String number1 = "";
+				String number2 = "";
+				for (int j = 1; j <= parts[0].length(); j++ ) {
+					if((parts[0].charAt(parts[0].length() - j) == '+') || (parts[0].charAt(parts[0].length() - j) == '-') || (parts[0].charAt(parts[0].length() - j) == '/') || (parts[0].charAt(parts[0].length() - j) == '*')) {
+						break;
+					}
+					number1 += parts[0].charAt(parts[0].length() - j);
+				}
+				number1 = new StringBuilder(number1).reverse().toString();
+				for (int j = 0; j < parts[1].length(); j++ ) {
+					if((parts[1].charAt(j) == '+') || (parts[1].charAt(j) == '-') || (parts[1].charAt(j) == '/') || (parts[1].charAt(j) == '*')) {
+						break;
+					}
+					number2 += parts[1].charAt(j);
+				}
+				value = Float.valueOf(number1) - Float.valueOf(number2);
+				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
+				expr = expr.replaceFirst(number1, "" + value);
+				expr = expr.replaceFirst(number2, "");
+				if (expr.indexOf('-') == 0){
+					expr = expr.replaceFirst("(?s)(.*)" + "-", "$1"+ "");
+				} else {
+					expr = expr.replaceFirst("-", "");
+				}
 			}
 		}
 		return expr;

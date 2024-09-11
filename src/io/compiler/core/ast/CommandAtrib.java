@@ -1,5 +1,6 @@
 package io.compiler.core.ast;
 
+import io.compiler.types.Types;
 import io.compiler.types.Var;
 
 public class CommandAtrib extends Command {
@@ -46,7 +47,11 @@ public class CommandAtrib extends Command {
 	@Override
 	public String generateTarget() {
 		// TODO Auto-generated method stub
-		return this.var.getId() + " " + this.operador + " " + this.atrib + ";\n";
+		if (var.getType().getValue() == Types.NUMBER.getValue() && this.operador.equals("=")) {
+			return this.var.getId() + " " + this.operador + " (float) " + this.atrib + ";\n";
+		} else {
+			return this.var.getId() + " " + this.operador + " " + this.atrib + ";\n";
+		}
 	}
 
 }

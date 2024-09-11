@@ -2,18 +2,18 @@ import java.util.Scanner;
 public class meuPrograma{ 
 	public static void main(String args[]) { 
 		Scanner sc = new Scanner(System.in);
-		int a;
-		int b;
+		float a;
+		float b;
 		String x;
 		String y;
 		System.out.println("Hello World");
 		System.out.println("Fim do programa");
-		a = sc.nextInt();
-		b = sc.nextInt();
+		a = sc.nextFloat();
+		b = sc.nextFloat();
 		x = sc.nextLine();
 		y = sc.nextLine();
-		a = 2+3.14-5*8.56/10-7*6.45;
-		a = 10.10;
+		a = (float) 46.01;
+		a = (float) 10.10;
 		System.out.println(a);
 		while (a<5) {
 			System.out.println(a);
@@ -50,11 +50,11 @@ public class meuPrograma{
 			do {
 			System.out.println(a);
 			a += 5;
-		} while (a<5)
+		} while (a<5);
 		}
 		do {
 			System.out.println(b);
 			b -= 1;
-		} while (b>10)
+		} while (b>10);
 	}
 }
