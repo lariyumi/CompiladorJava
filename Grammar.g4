@@ -58,6 +58,29 @@ grammar Grammar;
 		return symbolTable.get(id) != null;
 	}
 	
+	public String calcular(String expr) {
+		int countOperations = 0;
+		for (int i = 0; i < expr.length(); i++) {
+			if((expr.charAt(i) == '+') || (expr.charAt(i) == '-') || (expr.charAt(i) == '/') || (expr.charAt(i) == '*')) {
+				countOperations++;
+			}
+		}
+		String[] parts = {};
+		float value = 0;
+		for(int i = 0; i < countOperations; i++) {
+			if ((expr.indexOf('/') < expr.indexOf('*')) && (expr.indexOf('/') != -1)) {
+				parts = expr.split("\\/");
+			} else if ((expr.indexOf('/') > expr.indexOf('*')) && (expr.indexOf('*') != -1)) {
+				parts = expr.split("\\*");
+			} else if ((expr.indexOf('+') < expr.indexOf('-')) && (expr.indexOf('+') != -1)) {
+				parts = expr.split("\\+");
+			} else if ((expr.indexOf('/') > expr.indexOf('-')) && (expr.indexOf('-') != -1)) {
+				parts = expr.split("\\-");
+			}
+		}
+		return expr;
+	}
+	
 }
 
 programa	:	'programa' ID 	{ 
@@ -239,7 +262,11 @@ expr		:	termo 	{
 							strExpr += _input.LT(-1).getText();
 							atribuicao += _input.LT(-1).getText();
 			 			}
-			 	exprl
+			 	exprl	{
+			 				if (atribuicao.indexOf('/') != -1 || atribuicao.indexOf('*') != -1 || atribuicao.indexOf('+') != -1 || atribuicao.indexOf('-') != -1) {
+			 					atribuicao = calcular(atribuicao.toString());
+			 				}
+			 			}
 			;
 			
 termo		:	ID { if (!isDeclared(_input.LT(-1).getText())) {

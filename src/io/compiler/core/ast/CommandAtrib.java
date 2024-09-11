@@ -46,7 +46,7 @@ public class CommandAtrib extends Command {
 	@Override
 	public String generateTarget() {
 		// TODO Auto-generated method stub
-		return this.var.getId() + " " + this.operador + " " + this.atrib + "\n";
+		return this.var.getId() + " " + this.operador + " " + this.atrib + ";\n";
 	}
 
 }
