@@ -62,7 +62,7 @@ grammar Grammar;
 	public String calcular(String expr) {
 		int countOperations = 0;
 		for (int i = 0; i < expr.length(); i++) {
-			if((expr.charAt(i) == '+') || (expr.charAt(i) == '-') || (expr.charAt(i) == '/') || (expr.charAt(i) == '*')) {
+			if((expr.charAt(i) == '+') || (expr.charAt(i) == '/') || (expr.charAt(i) == '*') || (expr.charAt(i) == '-' && i != 0 && expr.charAt(i-1) != '+' && expr.charAt(i-1) != '-' && expr.charAt(i-1) != '*' && expr.charAt(i-1) != '/')) {
 				countOperations++;
 			}
 		}
@@ -71,7 +71,7 @@ grammar Grammar;
 		float value = 0;
 		
 		for(int i = 0; i < countOperations; i++) {
-			if ((expr.indexOf('/') < expr.indexOf('*')) && (expr.indexOf('/') != -1) || ((expr.indexOf('*') == -1 && expr.indexOf('/') != -1))) {
+			if (((expr.indexOf('/') < expr.indexOf('*')) && (expr.indexOf('/') != -1)) || ((expr.indexOf('*') == -1 && expr.indexOf('/') != -1))) {
 				parts = expr.split("\\/");
 				String number1 = "";
 				String number2 = "";
@@ -88,11 +88,13 @@ grammar Grammar;
 					}
 					number2 += parts[1].charAt(j);
 				}
+				System.out.println("Expressão Resolvida: " + number1 + " / " + number2);
 				value = Float.valueOf(number1) / Float.valueOf(number2);
+				System.out.println("Valor da Expressão " + value);
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
-				expr = expr.replaceFirst(number1, "" + value);
-				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst(number1, "");
 				expr = expr.replaceFirst("\\/", "");
+				expr = expr.replaceFirst(number2, "" + String.format("%s", value));
 			} else if (((expr.indexOf('/') > expr.indexOf('*')) && (expr.indexOf('*') != -1)) || ((expr.indexOf('/') == -1 && expr.indexOf('*') != -1))) {
 				parts = expr.split("\\*");
 				String number1 = "";
@@ -110,11 +112,14 @@ grammar Grammar;
 					}
 					number2 += parts[1].charAt(j);
 				}
+				System.out.println("Expressão Resolvida: " + number1 + " * " + number2);
 				value = Float.valueOf(number1) * Float.valueOf(number2);
+				System.out.println("Valor da Expressão " + value);
+				String valorNovo = "" + value;
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
-				expr = expr.replaceFirst(number1, "" + value);
-				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst(number1, "");
 				expr = expr.replaceFirst("\\*", "");
+				expr = expr.replaceFirst(number2, "" + String.format("%s", value));
 			} else if ((expr.indexOf('+') < expr.indexOf('-')) && (expr.indexOf('+') != -1)  || ((expr.indexOf('-') == -1 && expr.indexOf('+') != -1))) {
 				parts = expr.split("\\+");
 				String number1 = "";
@@ -132,11 +137,13 @@ grammar Grammar;
 					}
 					number2 += parts[1].charAt(j);
 				}
+				System.out.println("Expressão Resolvida: " + number1 + " + " + number2);
 				value = Float.valueOf(number1) + Float.valueOf(number2);
+				System.out.println("Valor da Expressão " + value);
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
-				expr = expr.replaceFirst(number1, "" + value);
-				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst(number1, "");
 				expr = expr.replaceFirst("\\+", "");
+				expr = expr.replaceFirst(number2, "" + String.format("%s", value));
 			} else if ((expr.indexOf('+') > expr.indexOf('-')) && (expr.indexOf('-') != -1) || ((expr.indexOf('+') == -1 && expr.indexOf('-') != -1))) {
 				parts = expr.split("\\-");
 				String number1 = "";
@@ -154,10 +161,12 @@ grammar Grammar;
 					}
 					number2 += parts[1].charAt(j);
 				}
+				System.out.println("Expressão Resolvida: " + number1 + " - " + number2);
 				value = Float.valueOf(number1) - Float.valueOf(number2);
+				System.out.println("Valor da Expressão " + value);
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado e o operador;
-				expr = expr.replaceFirst(number1, "" + value);
-				expr = expr.replaceFirst(number2, "");
+				expr = expr.replaceFirst(number1, "");
+				expr = expr.replaceFirst(number2, "" + String.format("%s", value));
 				if (expr.indexOf('-') == 0){
 					expr = expr.replaceFirst("(?s)(.*)" + "-", "$1"+ "");
 				} else {
@@ -360,7 +369,7 @@ expr		:	termo 	{
 							atribuicao += _input.LT(-1).getText();
 			 			}
 			 	exprl	{
-			 				if (atribuicao.indexOf('/') != -1 || atribuicao.indexOf('*') != -1 || atribuicao.indexOf('+') != -1 || atribuicao.indexOf('-') != -1) {
+			 				if (atribuicao.indexOf('/') != -1 || atribuicao.indexOf('*') != -1 || atribuicao.indexOf('+') != -1 || (atribuicao.indexOf('-') != -1 && atribuicao.indexOf('-') != 0)) {
 			 					atribuicao = calcular(atribuicao.toString());
 			 				}
 			 			}
@@ -438,7 +447,7 @@ ID			:	[a-z] ( [a-z] | [A-Z] | [0-9] )*
 TEXTO		:	'"' ( [a-z] | [A-Z] | [0-9] | ' ' | ',' | '.' | '-' | '!' | '(' | ')' )* '"'
 			;
 			
-NUM			:	[0-9]+ ( '.' [0-9]+ )?
+NUM			:	('-')?[0-9]+('.'[0-9]+)?
 			;
 
 VIRG		:	','

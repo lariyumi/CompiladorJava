@@ -11,8 +11,8 @@ public class meuPrograma{
 		a = sc.nextFloat();
 		b = sc.nextFloat();
 		x = sc.nextLine();
-		a = (float) 46.01;
-		a = (float) 10.10;
+		a = (float) 4.0;
+		a = (float) -10.10;
 		System.out.println(a);
 		while (a<5) {
 			System.out.println(a);
