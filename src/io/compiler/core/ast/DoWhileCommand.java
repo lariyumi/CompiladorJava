@@ -60,7 +60,14 @@ public class DoWhileCommand extends Command {
 	@Override
 	public String generateTargetPython() {
 		// TODO Auto-generated method stub
-		return "Teste";
+		StringBuilder str = new StringBuilder();
+		str.append("while (True) :\n");
+		for (Command cmd: list) {
+			str.append("			" + cmd.generateTargetPython());
+		}
+		str.append("			if (" + expression + ") :\n");
+		str.append("				break\n");
+		return str.toString();
 	}
 
 }
