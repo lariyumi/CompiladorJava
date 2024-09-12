@@ -34,15 +34,33 @@ public class DoWhileCommand extends Command {
 	}
 
 	@Override
-	public String generateTarget() {
+	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
 		str.append("do {\n");
 		for (Command cmd: list) {
-			str.append("			" + cmd.generateTarget());
+			str.append("			" + cmd.generateTargetJava());
 		}
 		str.append("		} while (" + expression + ");\n");
 		return str.toString();
+	}
+
+	@Override
+	public String generateTargetC() {
+		// TODO Auto-generated method stub
+		StringBuilder str = new StringBuilder();
+		str.append("do {\n");
+		for (Command cmd: list) {
+			str.append("			" + cmd.generateTargetC());
+		}
+		str.append("		} while (" + expression + ");\n");
+		return str.toString();
+	}
+
+	@Override
+	public String generateTargetPython() {
+		// TODO Auto-generated method stub
+		return "Teste";
 	}
 
 }

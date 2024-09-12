@@ -36,7 +36,7 @@ public class Program {
 		this.commandList = commandList;
 	}
 	
-	public String generateTarget() {
+	public String generateTargetJava() {
 		StringBuilder str = new StringBuilder();
 		str.append("import java.util.Scanner;\n");
 		str.append("public class " + name + "{ \n");
@@ -54,10 +54,48 @@ public class Program {
 		}
 		
 		for(Command cmd: commandList) {
-			str.append("		" + cmd.generateTarget());
+			str.append("		" + cmd.generateTargetJava());
 		}
 		str.append("	}\n");
 		str.append("}");
+		
+		return str.toString();
+	}
+	
+	public String generateTargetC() {
+		StringBuilder str = new StringBuilder();
+		str.append("#include <stdio.h>\n");
+		str.append("int main() { \n");;
+		for (String varId: symbolTable.keySet()) {
+			Var var = symbolTable.get(varId);
+			if (var.getType() == Types.NUMBER) {
+				str.append("		float ");
+				str.append(var.getId() + ";\n");
+			}
+			else {
+				str.append("		char ");	
+				str.append(var.getId() + "[100];\n");
+			}
+		}
+		for(Command cmd: commandList) {
+			str.append("		" + cmd.generateTargetC());
+		}
+		str.append("	return 0;\n ");
+		str.append("}");
+		
+		return str.toString();
+	}
+	
+	public String generateTargetPython() {
+		StringBuilder str = new StringBuilder();
+		for (String varId: symbolTable.keySet()) {
+			Var var = symbolTable.get(varId);
+			str.append(var.getId() + " = None\n");
+			str.append(var.getId() + " = None\n");
+		}
+		for(Command cmd: commandList) {
+			str.append("		" + cmd.generateTargetPython());
+		}
 		
 		return str.toString();
 	}

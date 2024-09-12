@@ -2,6 +2,10 @@ package io.compiler.core.ast;
 
 public abstract class Command {
 
-	public abstract String generateTarget();
+	public abstract String generateTargetJava();
+	
+	public abstract String generateTargetC();
+	
+	public abstract String generateTargetPython();
 	
 }

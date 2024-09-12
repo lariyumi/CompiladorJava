@@ -45,20 +45,56 @@ public class IfCommand extends Command {
 	}
 	
 	@Override
-	public String generateTarget() {
+	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
 		str.append("if (" + expression + ") {\n");
 		for (Command cmd: trueList) {
-			str.append("			" + cmd.generateTarget());
+			str.append("			" + cmd.generateTargetJava());
 		}
 		str.append("		}\n");
 		if(!falseList.isEmpty()) {
 			str.append("		else {\n");
 			for (Command cmd: falseList) {
-				str.append("			" + cmd.generateTarget());
+				str.append("			" + cmd.generateTargetJava());
 			}
 			str.append("		}\n");
+		}
+		return str.toString();
+	}
+
+	@Override
+	public String generateTargetC() {
+		// TODO Auto-generated method stub
+		StringBuilder str = new StringBuilder();
+		str.append("if (" + expression + ") {\n");
+		for (Command cmd: trueList) {
+			str.append("			" + cmd.generateTargetC());
+		}
+		str.append("		}\n");
+		if(!falseList.isEmpty()) {
+			str.append("		else {\n");
+			for (Command cmd: falseList) {
+				str.append("			" + cmd.generateTargetC());
+			}
+			str.append("		}\n");
+		}
+		return str.toString();
+	}
+
+	@Override
+	public String generateTargetPython() {
+		// TODO Auto-generated method stub
+		StringBuilder str = new StringBuilder();
+		str.append("if (" + expression + ") :\n");
+		for (Command cmd: trueList) {
+			str.append("					" + cmd.generateTargetPython());
+		}
+		if(!falseList.isEmpty()) {
+			str.append("		else :\n");
+			for (Command cmd: falseList) {
+				str.append("					" + cmd.generateTargetPython());
+			}
 		}
 		return str.toString();
 	}

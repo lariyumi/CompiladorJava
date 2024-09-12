@@ -41,13 +41,35 @@ public class MainClass {
 				File f = new File(program.getName() + ".java");
 				FileWriter fr = new FileWriter(f);
 				PrintWriter pr = new PrintWriter(fr);
-				pr.println(program.generateTarget());
+				pr.println(program.generateTargetJava());
 				pr.close();
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 			
-			System.out.println(program.generateTarget());
+			try {
+				File f = new File(program.getName() + ".c");
+				FileWriter fr = new FileWriter(f);
+				PrintWriter pr = new PrintWriter(fr);
+				pr.println(program.generateTargetC());
+				pr.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			
+			try {
+				File f = new File(program.getName() + ".py");
+				FileWriter fr = new FileWriter(f);
+				PrintWriter pr = new PrintWriter(fr);
+				pr.println(program.generateTargetPython());
+				pr.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			
+			System.out.println("Programa em Java: \n" + program.generateTargetJava());
+			System.out.println("Programa em C: \n" + program.generateTargetC());
+			System.out.println("Programa em Python: \n" + program.generateTargetPython());
 		}
 		catch(Exception ex) {
 			System.err.println("Erro: " + ex.getMessage());

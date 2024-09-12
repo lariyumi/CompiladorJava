@@ -5,7 +5,7 @@ public class WriteCommand extends Command {
 	private String content;
 
 	@Override
-	public String generateTarget() {
+	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		return "System.out.println(" + content + ");\n";
 	}
@@ -25,6 +25,21 @@ public class WriteCommand extends Command {
 
 	public WriteCommand() {
 		super();
+	}
+
+	@Override
+	public String generateTargetC() {
+		// TODO Auto-generated method stub
+		if (content.indexOf('"') == -1) {
+			return "printf(\"%f\", &"+ content + ");\n";
+		} else {
+			return "printf(" + content + ");\n";
+		}
+	}
+	
+	public String generateTargetPython() {
+		// TODO Auto-generated method stub
+		return "print(" + content + ")\n";
 	}
 
 }

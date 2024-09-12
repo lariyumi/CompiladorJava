@@ -25,9 +25,21 @@ public class ReadCommand extends Command {
 	}
 
 	@Override
-	public String generateTarget() {
+	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		return var.getId() +  " = " + ((var.getType() == Types.NUMBER) ? "sc.nextFloat();" : "sc.nextLine();") + "\n";
+	}
+
+	@Override
+	public String generateTargetC() {
+		// TODO Auto-generated method stub
+		return "scanf(" + ((var.getType() == Types.NUMBER) ? ("\"%f\", &" + var.getId()) : ("\"%s\", &" + var.getId())) + ");\n";
+	}
+
+	@Override
+	public String generateTargetPython() {
+		// TODO Auto-generated method stub
+		return var.getId() + " = input()\n";
 	}
 	
 }

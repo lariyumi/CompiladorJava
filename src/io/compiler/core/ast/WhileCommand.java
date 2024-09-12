@@ -34,14 +34,36 @@ public class WhileCommand extends Command {
 	}
 
 	@Override
-	public String generateTarget() {
+	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
 		str.append("while (" + expression + ") {\n");
 		for (Command cmd: list) {
-			str.append("			" + cmd.generateTarget());
+			str.append("			" + cmd.generateTargetJava());
 		}
 		str.append("		}\n");
+		return str.toString();
+	}
+
+	@Override
+	public String generateTargetC() {
+		// TODO Auto-generated method stub
+		StringBuilder str = new StringBuilder();
+		str.append("while (" + expression + ") {\n");
+		for (Command cmd: list) {
+			str.append("			" + cmd.generateTargetC());
+		}
+		str.append("		}\n");
+		return str.toString();
+	}
+	
+	@Override
+	public String generateTargetPython() {
+		StringBuilder str = new StringBuilder();
+		str.append("while (" + expression + ") :\n");
+		for (Command cmd: list) {
+			str.append("			" + cmd.generateTargetPython());
+		}
 		return str.toString();
 	}
 	

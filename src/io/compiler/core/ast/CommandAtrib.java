@@ -45,13 +45,25 @@ public class CommandAtrib extends Command {
 	}
 
 	@Override
-	public String generateTarget() {
+	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		if (var.getType().getValue() == Types.NUMBER.getValue() && this.operador.equals("=")) {
 			return this.var.getId() + " " + this.operador + " (float) " + this.atrib + ";\n";
 		} else {
 			return this.var.getId() + " " + this.operador + " " + this.atrib + ";\n";
 		}
+	}
+
+	@Override
+	public String generateTargetC() {
+		// TODO Auto-generated method stub
+		return this.var.getId() + " " + this.operador + " " +this.atrib + ";\n";
+	}
+
+	@Override
+	public String generateTargetPython() {
+		// TODO Auto-generated method stub
+		return this.var.getId() + " " + this.operador + " " + this.atrib + "\n";
 	}
 
 }
