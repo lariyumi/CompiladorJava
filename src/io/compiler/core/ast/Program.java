@@ -88,9 +88,9 @@ public class Program {
 	
 	public String generateTargetPython() {
 		StringBuilder str = new StringBuilder();
+		str.append("#Necessário formatar código corretamente para rodar de forma apropriada\n");
 		for (String varId: symbolTable.keySet()) {
 			Var var = symbolTable.get(varId);
-			str.append(var.getId() + " = None\n");
 			str.append(var.getId() + " = None\n");
 		}
 		for(Command cmd: commandList) {

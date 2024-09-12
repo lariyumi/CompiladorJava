@@ -8,7 +8,7 @@ programa meuPrograma
 		leia(a);
 		leia(b);
 		leia(x);
-		a = 4 * 5 / 10 + 2;
+		a = 10.25 - -5 * 10 / 40;
 		a = -10.10;
 		escreva(a);
 		
