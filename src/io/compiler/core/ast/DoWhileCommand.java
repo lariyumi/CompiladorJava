@@ -69,7 +69,6 @@ public class DoWhileCommand extends Command {
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetPython());
 		}
-		
 		String expressionPython = expression.replace("e", " and ");
 		expressionPython = expressionPython.replace("ou", " or ");
 		str.append("			if (" + expressionPython + "):\n");

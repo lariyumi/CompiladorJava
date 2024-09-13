@@ -37,7 +37,7 @@ grammar Grammar;
 	//Foi criada uma pilha de listas de comando
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 
-	
+	//Método para alterar o tipo de uma variável
 	public void updateType() { 
 		for(Var v: currentDecl){
 			v.setType(currentType);
@@ -45,20 +45,24 @@ grammar Grammar;
 		}
 	}
 		
+	//Método para exibir as variáveis armazenadas na symbol table
 	public void exibirVar() {
 		for(String id: symbolTable.keySet()){
 			System.out.println(symbolTable.get(id));
 		}
 	}
 	
+	//retorna o programa 
 	public Program getProgram() {
 		return this.program;
 	}
 	
+	//Método que verifica se uma variável foi declarada
 	public boolean isDeclared(String id) {
 		return symbolTable.get(id) != null;
 	}
 	
+	//Método que realiza o cálculo de possíveis expressões aritméticas
 	public String calcular(String expr) {
 		int countOperations = 0;
 		for (int i = 0; i < expr.length(); i++) {
@@ -68,12 +72,15 @@ grammar Grammar;
 			}
 		}
 		
+		System.out.println("Expressão inicial a ser resolvida: " + expr);
+		
 		String[] parts = {};
 		float value = 0;
 		
 		for(int i = 0; i < countOperations; i++) {
 			int menor_posicao_menos = -1;
 			int menor_posicao_mais = -1;
+			//Fazemos um for para ver qual é a menor posição do operador '-' (sem ser o sinal '-' dos números negativos) e a menor posição do sinal +
 			for (int l = 0; l < expr.length(); l++) {
 				if(expr.charAt(l) == '-' && l != 0 && (menor_posicao_menos > l || menor_posicao_menos == -1)) {
 					menor_posicao_menos = l;
@@ -220,6 +227,7 @@ grammar Grammar;
 				expr = expr.replaceFirst(number1+"-"+number2, "" + String.format("%s", value));
 			}
 		}
+		//A expressão retornada ao final será o resultado da operação aritmética passada
 		return expr;
 	}
 	
@@ -240,13 +248,14 @@ programa	:	'programa' ID 	{
 					    for (Entry<String, Var> entry: symbolTable.entrySet()) {
 					    	boolean isUsed = entry.getValue().isInitialized();
 					    	if (isUsed == false) {
-					    		throw new SemanticException("Variável não declarada, mas não utilizada: " + entry.getValue().getId());
+					    		throw new SemanticException("Variável declarada, mas não utilizada: " + entry.getValue().getId());
 					    	}
 					    }
 					} catch (RuntimeException e) { 
 					    System.out.println("Aviso: " + e); 
 					} 
 					program.setSymbolTable(symbolTable);
+					//Adicionamos os comandos que achamos ao longo do programa e estão armazenados na pilha na CommandList da classe Program
 					program.setCommandList(stack.pop());
 				}
 			;
@@ -301,6 +310,7 @@ cmdIf		:	'se'	{
 							}
 				)?
 				'fimse'	{
+							//Adicionamos na pilha os comandos if que achamos
 							stack.peek().add(ifCommandStack.pop());
 						}
 			;
@@ -323,6 +333,7 @@ cmdWhile	:	'enquanto'	{
 				FP	{ 	
 						expressionStack.peek().setExpression(strExpr); 
 						strExpr = "";
+						//Pegamos a expressão/condição que estaria dentro do while
 						whileCommandStack.peek().setExpression(expressionStack.pop().getExpression());
 					}
 				comando+	{ 
@@ -386,8 +397,6 @@ cmdAtrib	:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 				expr
 				PV
 				{ 
-					//System.out.println("Tipo da expressão do lado esquerdo = " + leftType); 
-					//System.out.println("Tipo da expressão do lado direito = " + rightType); 
 					if ( leftType.getValue() != rightType.getValue() ) {
 						throw new SemanticException("Houve uma incompatibilidade de tipos na atribuição");
 					}
@@ -399,7 +408,9 @@ cmdAtrib	:	ID { if (!isDeclared(_input.LT(-1).getText())) {
 			
 cmdLeitura	:	'leia' 
 				AP 
-				ID { if (!isDeclared(_input.LT(-1).getText())) {
+				ID { 
+					//Verifica se a variável foi declarada
+					if (!isDeclared(_input.LT(-1).getText())) {
 						throw new SemanticException("Variável não declarada: " + _input.LT(-1).getText());
 					} 
 					symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
