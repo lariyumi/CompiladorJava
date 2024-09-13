@@ -132,7 +132,7 @@ grammar Grammar;
 					number2 += parts[1].charAt(j);
 				}
 				value = Float.valueOf(number1) * Float.valueOf(number2);
-				System.out.println("Expressão Resolvida: " + number1 + " / " + number2 + "	|	Valor da Expressão " + value);
+				System.out.println("Expressão Resolvida: " + number1 + " * " + number2 + "	|	Valor da Expressão " + value);
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado;
 				expr = expr.replaceFirst(number1 + "\\*" + number2, "" + String.format("%s", value));
 			} else if (menor_posicao_mais < menor_posicao_menos && menor_posicao_mais != -1) {
@@ -157,7 +157,8 @@ grammar Grammar;
 					}
 					number2 += parts[1].charAt(j);
 				}
-				System.out.println("Expressão Resolvida: " + number1 + " / " + number2 + "	|	Valor da Expressão " + value);
+				value = Float.valueOf(number1) + Float.valueOf(number2);
+				System.out.println("Expressão Resolvida: " + number1 + " + " + number2 + "	|	Valor da Expressão " + value);
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado;
 				expr = expr.replaceFirst(number1 + "\\+" + number2, "" + String.format("%s", value));
 			} else {
@@ -214,7 +215,7 @@ grammar Grammar;
 					}
 				}
 				value = Float.valueOf(number1) - Float.valueOf(number2);
-				System.out.println("Expressão Resolvida: " + number1 + " / " + number2 + "	|	Valor da Expressão " + value);
+				System.out.println("Expressão Resolvida: " + number1 + " - " + number2 + "	|	Valor da Expressão " + value);
 				//precisa tirar da expr os números utilizados, substituindo pelo valor dado;
 				expr = expr.replaceFirst(number1+"-"+number2, "" + String.format("%s", value));
 			}
