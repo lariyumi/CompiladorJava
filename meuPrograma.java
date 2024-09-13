@@ -18,7 +18,7 @@ public class meuPrograma{
 			System.out.println(a);
 			a += 1;
 		}
-		if (a>5) {
+		if (a>5  &&  b<10) {
 			System.out.println("Maior que 5");
 			if (b>a) {
 			System.out.println("B maior que A");
@@ -39,18 +39,16 @@ public class meuPrograma{
 		}
 		}
 		}
-		while (b<10) {
+		while (b<10  &&  a<5) {
 			System.out.println(b);
 			b += 1;
-			while (a<5) {
-			System.out.println(a);
 			a += 1;
 		}
-			do {
+		do {
 			System.out.println(a);
 			a += 5;
-		} while (a<5);
-		}
+			b -= 1;
+		} while (a<5  ||  b>10);
 		do {
 			System.out.println(b);
 			b -= 1;

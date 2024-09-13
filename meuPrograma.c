@@ -16,7 +16,7 @@ int main() {
 			printf("%f", &a);
 			a += 1;
 		}
-		if (a>5) {
+		if (a>5  &&  b<10) {
 			printf("Maior que 5");
 			if (b>a) {
 			printf("B maior que A");
@@ -37,18 +37,16 @@ int main() {
 		}
 		}
 		}
-		while (b<10) {
+		while (b<10  &&  a<5) {
 			printf("%f", &b);
 			b += 1;
-			while (a<5) {
-			printf("%f", &a);
 			a += 1;
 		}
-			do {
+		do {
 			printf("%f", &a);
 			a += 5;
-		} while (a<5);
-		}
+			b -= 1;
+		} while (a<5  ||  b>10);
 		do {
 			printf("%f", &b);
 			b -= 1;

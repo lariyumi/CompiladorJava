@@ -41,7 +41,9 @@ public class DoWhileCommand extends Command {
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetJava());
 		}
-		str.append("		} while (" + expression + ");\n");
+		String expressionJava = expression.replace("e", " && ");
+		expressionJava = expressionJava.replace("ou", " || ");
+		str.append("		} while (" + expressionJava + ");\n");
 		return str.toString();
 	}
 
@@ -53,7 +55,9 @@ public class DoWhileCommand extends Command {
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetC());
 		}
-		str.append("		} while (" + expression + ");\n");
+		String expressionC = expression.replace("e", " && ");
+		expressionC = expressionC.replace("ou", " || ");
+		str.append("		} while (" + expressionC + ");\n");
 		return str.toString();
 	}
 
@@ -65,7 +69,10 @@ public class DoWhileCommand extends Command {
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetPython());
 		}
-		str.append("			if (" + expression + "):\n");
+		
+		String expressionPython = expression.replace("e", " and ");
+		expressionPython = expressionPython.replace("ou", " or ");
+		str.append("			if (" + expressionPython + "):\n");
 		str.append("				break\n");
 		return str.toString();
 	}

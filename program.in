@@ -16,7 +16,7 @@ programa meuPrograma
 			escreva(a);
 			a += 1;
 		fimwhile
-		se ( a  > 5 ) entao
+		se ( a  > 5 e b < 10 ) entao
 			escreva("Maior que 5");
 			se (b > a) entao
 				escreva("B maior que A");
@@ -35,18 +35,17 @@ programa meuPrograma
 			fimse
 		fimse
 		
-		enquanto (b < 10)
+		enquanto (b < 10 e a < 5)
 			escreva(b);
 			b += 1;
-			enquanto(a < 5)
-				escreva(a);
-				a += 1;
-			fimwhile
-			faca
-				escreva(a);
-				a += 5;
-			enquanto (a < 5)
+			a += 1;
 		fimwhile
+		faca
+			escreva(a);
+			a += 5;
+			b -= 1;
+		enquanto (a < 5 ou b > 10)
+		
 		
 		faca
 			escreva(b);

@@ -37,7 +37,9 @@ public class WhileCommand extends Command {
 	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("while (" + expression + ") {\n");
+		String expressionJava = expression.replace("e", " && ");
+		expressionJava = expressionJava.replace("ou", " || ");
+		str.append("while (" + expressionJava + ") {\n");
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetJava());
 		}
@@ -49,7 +51,9 @@ public class WhileCommand extends Command {
 	public String generateTargetC() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("while (" + expression + ") {\n");
+		String expressionC = expression.replace("e", " && ");
+		expressionC = expressionC.replace("ou", " || ");
+		str.append("while (" + expressionC + ") {\n");
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetC());
 		}
@@ -60,7 +64,9 @@ public class WhileCommand extends Command {
 	@Override
 	public String generateTargetPython() {
 		StringBuilder str = new StringBuilder();
-		str.append("while (" + expression + "):\n");
+		String expressionPython = expression.replace("e", " and ");
+		expressionPython = expressionPython.replace("ou", " or ");
+		str.append("while (" + expressionPython + "):\n");
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetPython());
 		}

@@ -279,6 +279,11 @@ cmdIf		:	'se'	{
 				expr 
 				OP_REL { strExpr += _input.LT(-1).getText();  } 
 				expr 
+				(OP_LOGIC {	strExpr += " " + _input.LT(-1).getText() + " "; }
+				expr
+				OP_REL	{	strExpr += _input.LT(-1).getText(); }
+				expr
+				)*
 				FP 	{ 	
 						expressionStack.peek().setExpression(strExpr); 
 						strExpr = "";
@@ -310,6 +315,11 @@ cmdWhile	:	'enquanto'	{
 				expr 
 				OP_REL { strExpr += _input.LT(-1).getText(); }
 				expr 
+				(OP_LOGIC {	strExpr += " " + _input.LT(-1).getText() + " "; }
+				expr
+				OP_REL	{	strExpr += _input.LT(-1).getText(); }
+				expr
+				)*
 				FP	{ 	
 						expressionStack.peek().setExpression(strExpr); 
 						strExpr = "";
@@ -338,11 +348,16 @@ cmdDoWhile	:	'faca'	{
 				OP_REL	{ 
 							strExpr += _input.LT(-1).getText(); 
 						}
-				expr	{
-							expressionStack.peek().setExpression(strExpr); 
-							strExpr = "";
-						}
+				expr
+						
+				(OP_LOGIC {	strExpr += " " + _input.LT(-1).getText() + " "; }
+				expr
+				OP_REL	{	strExpr += _input.LT(-1).getText(); }
+				expr
+				)*
 				FP 	{ 	
+						expressionStack.peek().setExpression(strExpr); 
+						strExpr = "";
 						doWhileCommandStack.peek().setExpression(expressionStack.pop().getExpression());
 						stack.peek().add(doWhileCommandStack.pop());
 					}
@@ -485,6 +500,9 @@ OP_AT		:	'='
 			;
 		
 OP_REL		:	'>' | '<' | '>=' | '<=' | '==' | '!='
+			;
+			
+OP_LOGIC	:	'e' | 'ou'	
 			;
 			
 ID			:	[a-z] ( [a-z] | [A-Z] | [0-9] )*

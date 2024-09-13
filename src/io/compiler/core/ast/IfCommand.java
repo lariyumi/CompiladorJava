@@ -48,7 +48,9 @@ public class IfCommand extends Command {
 	public String generateTargetJava() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("if (" + expression + ") {\n");
+		String expressionJava = expression.replace("e", " && ");
+		expressionJava = expressionJava.replace("ou", " || ");
+		str.append("if (" + expressionJava + ") {\n");
 		for (Command cmd: trueList) {
 			str.append("			" + cmd.generateTargetJava());
 		}
@@ -67,7 +69,9 @@ public class IfCommand extends Command {
 	public String generateTargetC() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("if (" + expression + ") {\n");
+		String expressionC = expression.replace("e", " && ");
+		expressionC = expressionC.replace("ou", " || ");
+		str.append("if (" + expressionC + ") {\n");
 		for (Command cmd: trueList) {
 			str.append("			" + cmd.generateTargetC());
 		}
@@ -86,7 +90,9 @@ public class IfCommand extends Command {
 	public String generateTargetPython() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("if (" + expression + "):\n");
+		String expressionPython = expression.replace("e", " and ");
+		expressionPython = expressionPython.replace("ou", " or ");
+		str.append("if (" + expressionPython + "):\n");
 		for (Command cmd: trueList) {
 			str.append("					" + cmd.generateTargetPython());
 		}
