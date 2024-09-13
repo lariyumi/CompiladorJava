@@ -86,12 +86,12 @@ public class IfCommand extends Command {
 	public String generateTargetPython() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("if (" + expression + ") :\n");
+		str.append("if (" + expression + "):\n");
 		for (Command cmd: trueList) {
 			str.append("					" + cmd.generateTargetPython());
 		}
 		if(!falseList.isEmpty()) {
-			str.append("		else :\n");
+			str.append("		else:\n");
 			for (Command cmd: falseList) {
 				str.append("					" + cmd.generateTargetPython());
 			}

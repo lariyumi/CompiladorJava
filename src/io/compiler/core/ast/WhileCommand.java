@@ -60,7 +60,7 @@ public class WhileCommand extends Command {
 	@Override
 	public String generateTargetPython() {
 		StringBuilder str = new StringBuilder();
-		str.append("while (" + expression + ") :\n");
+		str.append("while (" + expression + "):\n");
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetPython());
 		}

@@ -61,11 +61,11 @@ public class DoWhileCommand extends Command {
 	public String generateTargetPython() {
 		// TODO Auto-generated method stub
 		StringBuilder str = new StringBuilder();
-		str.append("while (True) :\n");
+		str.append("while (True):\n");
 		for (Command cmd: list) {
 			str.append("			" + cmd.generateTargetPython());
 		}
-		str.append("			if (" + expression + ") :\n");
+		str.append("			if (" + expression + "):\n");
 		str.append("				break\n");
 		return str.toString();
 	}
